@@ -45,6 +45,51 @@ func GetTodoById(c fiber.Ctx, db *sqlx.DB, todoId string, userId string) error {
 
 }
 
+func UpdateIsDoneValue(c fiber.Ctx, db *sqlx.DB, value bool, todoId string, userId string) error {
+	var todo mystructs.Todo
+
+	log.Print("The value of value is ", value)
+
+	query := `
+			UPDATE todos
+			SET isDone = $1
+			WHERE id = $2 AND userId = $3
+			RETURNING id, userId, text, isDone, isDeleted, createdAt, updateAt`
+
+	err := db.Get(&todo, query, value, todoId, userId)
+
+	if err != nil {
+		log.Print("The error is ", err)
+		return c.Status(fiber.ErrBadRequest.Code).JSON(fiber.Map{
+			"message": "error while updating",
+		})
+	}
+
+	return c.JSON(todo)
+
+}
+
+func UpdateTextValue(c fiber.Ctx, db *sqlx.DB, text string, todoId string, userId string) error {
+	var todo mystructs.Todo
+
+	query := `
+			UPDATE todos
+			SET text = $1
+			WHERE id = $2 AND userId = $3
+			RETURNING id, userId, text, isDone, isDeleted, createdAt, updateAt`
+
+	err := db.Get(&todo, query, text, todoId, userId)
+
+	if err != nil {
+		return c.Status(fiber.ErrBadRequest.Code).JSON(fiber.Map{
+			"message": "error while updating the data",
+		})
+	}
+
+	return c.JSON(todo)
+
+}
+
 func DeleteTodo(c fiber.Ctx, db *sqlx.DB, todoId string, userId string) error {
 	log.Print("The user Id is ", userId)
 	updateQuery := `UPDATE todos SET isDeleted = TRUE WHERE id = $1 AND userId = $2`

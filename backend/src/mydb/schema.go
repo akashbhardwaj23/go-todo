@@ -10,9 +10,11 @@ import (
 func CreateSchema(db *sqlx.DB) error {
 	var schema = `CREATE TABLE IF NOT EXISTS users (
 		id  UUID  PRIMARY KEY DEFAULT gen_random_uuid(),
-		name VARCHAR(255),
+		email VARCHAR(255),
+		name  VARCHAR(255),
 		password VARCHAR(255),
-		createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		UNIQUE(email)
 );
 	CREATE TABLE IF NOT EXISTS todos (
 		id 	UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -54,13 +56,13 @@ func InsertDataToTodo(db *sqlx.DB, text string, userId string, isDone bool, isDe
 	return id, nil
 }
 
-func InsertDataToUsers(db *sqlx.DB, name string, password string) (string, error) {
-	query := `INSERT INTO users (name, password) VALUES ($1, $2) RETURNING id`
+func InsertDataToUsers(db *sqlx.DB, email string, name string, password string) (string, error) {
+	query := `INSERT INTO users (email,name, password) VALUES ($1, $2, $3) RETURNING id`
 
 	log.Print("Sql Query ", query)
 
 	var id string
-	err := db.QueryRow(query, name, password).Scan(&id)
+	err := db.QueryRow(query, email, name, password).Scan(&id)
 	if err != nil {
 		return "", fmt.Errorf("error while inserting in users %w", err)
 	}

@@ -23,6 +23,8 @@ export function useTodos(){
    
 
     const fetchTodos = useCallback(async () => {
+        setLoading(true)
+       try {
         const userId = localStorage.getItem("userId");
 
         if(!userId){
@@ -37,6 +39,11 @@ export function useTodos(){
 
         const data = response.data
         setTodos(data)
+        setLoading(false)
+       } catch (error) {
+        setLoading(false)
+        console.log(error)
+       }
     }, [todos])
 
     useEffect(() => {

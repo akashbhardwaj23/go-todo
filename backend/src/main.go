@@ -79,6 +79,21 @@ func main() {
 		return routes.CreateUser(c, db, cred)
 	})
 
+	app.Post("/signin", func(c fiber.Ctx) error {
+		cred := new(mystructs.SignInCredentials)
+
+		log.Print("Credentials are ", cred)
+
+		if err := c.Bind().Body(cred); err != nil {
+			return c.JSON(fiber.Map{
+				"message": "Can't get the body",
+				"err":     err,
+			})
+		}
+		log.Print("Credentials after are ", cred)
+		return routes.GetUserByEmail(c, db, cred.Email, cred.Password)
+	})
+
 	api.Get("/getTodo/:todoId", func(c fiber.Ctx) error {
 		userId := c.Locals("userId").(string)
 		todoId := c.Params("todoId")
@@ -86,11 +101,41 @@ func main() {
 		return routes.GetTodoById(c, db, todoId, userId)
 	})
 
+	api.Post("/change/done/:todoId", func(c fiber.Ctx) error {
+		userId := c.Locals("userId").(string)
+		todoId := c.Params("todoId")
+
+		cred := new(mystructs.IsDoneValue)
+
+		if err := c.Bind().Body(cred); err != nil {
+			return c.Status(fiber.ErrBadRequest.Code).JSON(fiber.Map{
+				"message": "not able to parse the body",
+			})
+		}
+
+		return routes.UpdateIsDoneValue(c, db, cred.IsDone, todoId, userId)
+	})
+
 	api.Post("/deleteTodo/:todoId", Middleware, func(c fiber.Ctx) error {
 		userId := c.Locals("userId").(string)
 		todoId := c.Params("todoId")
 
 		return routes.DeleteTodo(c, db, todoId, userId)
+	})
+
+	api.Post("/edit/:todoId", func(c fiber.Ctx) error {
+		userId := c.Locals("userId").(string)
+		todoId := c.Params("todoId")
+
+		cred := new(mystructs.TextCredential)
+
+		if err := c.Bind().Body(cred); err != nil {
+			return c.Status(fiber.ErrBadRequest.Code).JSON(fiber.Map{
+				"message": "error while reading the body",
+			})
+		}
+
+		return routes.UpdateTextValue(c, db, cred.Text, todoId, userId)
 	})
 
 	api.Post("/create", Middleware, func(c fiber.Ctx) error {

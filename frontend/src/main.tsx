@@ -45,13 +45,14 @@ const indexRoute = createRoute({
 const signinRoute = createRoute({
     // here the parent is used to render the component in outlet and for navigation
     getParentRoute : () => RootRoute,
+    path : "/auth",
     beforeLoad : () => {
         const userId = localStorage.getItem("userId");
         if(userId){
             throw redirect({to : "/"})
         }
+
     },
-    path : "/auth",
     component : AuthPage
 })
 

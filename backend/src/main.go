@@ -166,5 +166,11 @@ func main() {
 		return routes.CreateTodo(c, db, cred, userId)
 	})
 
-	log.Fatal(app.Listen(":3001"))
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "3001"
+	}
+
+	log.Fatal(app.Listen(":" + port))
 }

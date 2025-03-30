@@ -19,7 +19,7 @@ export default function Navbar() {
             {name}
             </span>
           </div>
-        ) : (<div className="text-xl cursor-pointer" onClick={() => navigate({to : "/auth"})}>
+        ) : (<div className="text-xl cursor-pointer" onClick={() => navigate({to : "/sigin"})}>
             SignIn
         </div>)}
       </div>

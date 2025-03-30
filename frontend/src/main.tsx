@@ -17,7 +17,7 @@ const RootRoute = createRootRoute({
         </>
     ),
     notFoundComponent : () => (
-        <div className='bg-background text-foreground'>
+        <div className='bg-background text-foreground flex justify-center items-center m-10'>
             404 Not Found
         </div>
     )

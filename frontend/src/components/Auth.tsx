@@ -14,11 +14,12 @@ import {
 import axios from "axios";
 import { BACKEND_URL } from "@/config";
 import { useNavigate } from "@tanstack/react-router";
+import { Toaster, toast } from "sonner";
 
 export default function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("")
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
 
@@ -34,7 +35,12 @@ export default function AuthPage() {
     console.log(e.target);
 
     if (type === "register") {
-      if (email === "" || name === "" || password === "" || checkPassword === "") {
+      if (
+        email === "" ||
+        name === "" ||
+        password === "" ||
+        checkPassword === ""
+      ) {
         alert("Please Fill All The Values");
         setIsLoading(false);
         return;
@@ -49,14 +55,16 @@ export default function AuthPage() {
       try {
         const response = await axios.post(`${BACKEND_URL}/create-user`, {
           email: email,
-          name : name,
+          name: name,
           password: password,
         });
 
         const data = response.data.id;
 
         localStorage.setItem("userId", data);
-        navigate({ to: "/"});
+      
+        toast.info("Please Signin Now")
+
       } finally {
         setIsLoading(false);
       }
@@ -70,24 +78,24 @@ export default function AuthPage() {
       try {
         const response = await axios.post(`${BACKEND_URL}/signin`, {
           email: email,
-          password: password
+          password: password,
         });
 
         const data = response.data;
 
         localStorage.setItem("userId", data.id);
         localStorage.setItem("name", data.name);
-        localStorage.setItem("email", data.email)
-        navigate({ to: "/" , state : true });
+        localStorage.setItem("email", data.email);
+        navigate({ to: "/", state: true });
       } finally {
         setIsLoading(false);
       }
     }
-    // const formData = new FormData(e.target)
   }
 
   return (
     <div className="min-h-screen bg-[#D4C3AA] p-8 flex items-center justify-center">
+      <Toaster />
       <div className="w-full max-w-md">
         <Card className="border-[#372A15] bg-[#D4C3AA]">
           <CardHeader className="space-y-1">

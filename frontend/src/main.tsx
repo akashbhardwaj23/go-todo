@@ -30,7 +30,7 @@ const indexRoute = createRoute({
         console.log(location)
         const userId = localStorage.getItem("userId");
         if(!userId){
-            throw redirect({to : '/sigin'})
+            throw redirect({to : '/auth'})
         }
 
     },
@@ -45,7 +45,7 @@ const indexRoute = createRoute({
 const signinRoute = createRoute({
     // here the parent is used to render the component in outlet and for navigation
     getParentRoute : () => RootRoute,
-    path : "/sigin",
+      path : "/auth",
     beforeLoad : () => {
         const userId = localStorage.getItem("userId");
         if(userId){

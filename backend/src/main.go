@@ -28,6 +28,7 @@ func Middleware(c fiber.Ctx) error {
 }
 
 func main() {
+	fmt.Print("Currrent working directory ", os.Getenv("PORT"))
 	err := godotenv.Load(".env")
 
 	if err != nil {

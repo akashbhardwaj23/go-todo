@@ -134,7 +134,6 @@ func main() {
 	})
 
 	api.Post("/create", Middleware, func(c fiber.Ctx) error {
-		log.Print("What happened")
 		userId, ok := c.Locals("userId").(string)
 
 		if !ok {
@@ -144,7 +143,6 @@ func main() {
 				"error":   ok,
 			})
 		}
-		log.Print("userId in create ", userId)
 		cred := new(mystructs.TodoCredentials)
 
 		log.Print("Credentials", cred)
@@ -154,8 +152,6 @@ func main() {
 				"error": "Can't Get the Body",
 			})
 		}
-
-		log.Print("After err")
 
 		log.Print("The value of cread Text is ", cred.Text)
 		return routes.CreateTodo(c, db, cred, userId)

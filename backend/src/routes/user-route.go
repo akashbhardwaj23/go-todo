@@ -8,6 +8,7 @@ import (
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/jmoiron/sqlx"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func CreateUser(c fiber.Ctx, db *sqlx.DB, cred *mystructs.UserCredentials) error {
@@ -31,8 +32,6 @@ func GetUserByEmail(c fiber.Ctx, db *sqlx.DB, email string, password string) err
 	var user mystructs.User
 	getQuery := `SELECT id, email, name, password, createdAt FROM users WHERE email = $1`
 
-	log.Print("Here")
-
 	err := db.Get(&user, getQuery, email)
 
 	log.Print("Error is ", err)
@@ -41,9 +40,11 @@ func GetUserByEmail(c fiber.Ctx, db *sqlx.DB, email string, password string) err
 		return fmt.Errorf("error while getting user %v", err)
 	}
 
-	if user.Password != password {
-		return c.Status(fiber.ErrBadRequest.Code).JSON(fiber.Map{
-			"message": "Incorrect Password",
+	isPasswordCorrect := CheckPasswordHash(password, user.Password)
+
+	if !isPasswordCorrect {
+		return c.JSON(fiber.Map{
+			"message": "Password is Incorrect",
 		})
 	}
 
@@ -84,4 +85,9 @@ func GetTodosByUserId(c fiber.Ctx, db *sqlx.DB, userId string) error {
 	}
 
 	return c.JSON(todos)
+}
+
+func CheckPasswordHash(password string, hashedPassword string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	return err == nil
 }

@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func CreateSchema(db *sqlx.DB) error {
@@ -57,15 +58,28 @@ func InsertDataToTodo(db *sqlx.DB, text string, userId string, isDone bool, isDe
 }
 
 func InsertDataToUsers(db *sqlx.DB, email string, name string, password string) (string, error) {
+
 	query := `INSERT INTO users (email,name, password) VALUES ($1, $2, $3) RETURNING id`
 
 	log.Print("Sql Query ", query)
 
+	hashedPassword, err1 := GenerateHashedPassword(password)
+
+	if err1 != nil {
+		return "", fmt.Errorf("error while generating hashed password")
+	}
+
 	var id string
-	err := db.QueryRow(query, email, name, password).Scan(&id)
+	err := db.QueryRow(query, email, name, hashedPassword).Scan(&id)
 	if err != nil {
 		return "", fmt.Errorf("error while inserting in users %w", err)
 	}
 	log.Printf("Inserted user with id %s", id)
 	return id, nil
+}
+
+func GenerateHashedPassword(password string) (string, error) {
+	hashedBytes, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+
+	return string(hashedBytes), err
 }

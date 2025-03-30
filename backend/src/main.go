@@ -31,7 +31,7 @@ func main() {
 	err := godotenv.Load(".env")
 
 	if err != nil {
-		log.Print("Error While loading env")
+		log.Print("Error While loading env ", err)
 		return
 	}
 

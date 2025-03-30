@@ -5,7 +5,6 @@ export default function Navbar() {
 
   const userId = localStorage.getItem("userId");
   const name = localStorage.getItem("name")
-  const email = localStorage.getItem("email")
 
   return (
     <nav className="p-4 pt-6 border-b border-border">

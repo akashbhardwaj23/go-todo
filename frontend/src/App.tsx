@@ -4,8 +4,6 @@ import Navbar from './components/navbar'
 import { TodoComponent } from './Todo'
 import AuthPage  from './components/Auth'
 
-
-
 // Not using react-router
 
 function App() {

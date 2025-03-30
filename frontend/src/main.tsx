@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
 import { createRootRoute, createRoute, createRouter, Outlet, redirect, RouterProvider } from '@tanstack/react-router'
 import Navbar from './components/navbar.tsx'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
@@ -46,7 +45,7 @@ const indexRoute = createRoute({
 const signinRoute = createRoute({
     // here the parent is used to render the component in outlet and for navigation
     getParentRoute : () => RootRoute,
-    beforeLoad : ({location}) => {
+    beforeLoad : () => {
         const userId = localStorage.getItem("userId");
         if(userId){
             throw redirect({to : "/"})

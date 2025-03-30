@@ -1,0 +1,38 @@
+// const mockTodos: TodoInterface[] = [
+    //   {
+    //     id: "1",
+    //     text: "Work",
+    //     userId: "user1",
+    //     isDone: false,
+    //     isDeleted: false,
+    //     createdAt: new Date(),
+    //     updatedAt: new Date(),
+    //   },
+    //   {
+    //     id: "2",
+    //     text: "Study",
+    //     userId: "user2",
+    //     isDone: false,
+    //     isDeleted: false,
+    //     createdAt: new Date(),
+    //     updatedAt: new Date(),
+    //   },
+    //   {
+    //     id: "3",
+    //     text: "Shopping",
+    //     userId: "user3",
+    //     isDone: false,
+    //     isDeleted: false,
+    //     createdAt: new Date(),
+    //     updatedAt: new Date(),
+    //   },
+    //   {
+    //     id: "4",
+    //     text: "Exercise",
+    //     userId: "user4",
+    //     isDone: false,
+    //     isDeleted: false,
+    //     createdAt: new Date(),
+    //     updatedAt: new Date(),
+    //   },
+    // ];

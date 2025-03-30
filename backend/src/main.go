@@ -174,5 +174,7 @@ func main() {
 		port = "3001"
 	}
 
+	log.Print("Listening at Port :", port)
+
 	log.Fatal(app.Listen(":" + port))
 }

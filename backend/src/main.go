@@ -28,10 +28,12 @@ func Middleware(c fiber.Ctx) error {
 }
 
 func main() {
-	fmt.Print("Currrent working directory ", os.Getenv("PORT"))
+	log.Print("Currrent working directory ", os.Getenv("PORT"))
 	err := godotenv.Load(".env")
 
 	if err != nil {
+		dir, _ := os.Getwd()
+		log.Print("The current directory is ", dir)
 		log.Print("Error While loading env ", err)
 		return
 	}

@@ -11,7 +11,6 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/logger"
-	"github.com/joho/godotenv"
 )
 
 func Middleware(c fiber.Ctx) error {
@@ -29,14 +28,14 @@ func Middleware(c fiber.Ctx) error {
 
 func main() {
 	log.Print("Currrent working directory ", os.Getenv("PORT"))
-	err := godotenv.Load(".env")
+	// err := godotenv.Load(".env")
 
-	if err != nil {
-		dir, _ := os.Getwd()
-		log.Print("The current directory is ", dir)
-		log.Print("Error While loading env ", err)
-		return
-	}
+	// if err != nil {
+	// 	dir, _ := os.Getwd()
+	// 	log.Print("The current directory is ", dir)
+	// 	log.Print("Error While loading env ", err)
+	// 	return
+	// }
 
 	logFile, err := os.OpenFile("server.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {

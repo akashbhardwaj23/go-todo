@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 func NewConnection() (*sqlx.DB, error) {
-	godotenv.Load(".env")
+	// godotenv.Load(".env")
+
 	db, err := sqlx.Connect("postgres", os.Getenv("DATABASE_URL"))
 
 	if err != nil {
